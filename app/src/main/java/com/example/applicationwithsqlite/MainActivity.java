@@ -1,12 +1,14 @@
 package com.example.applicationwithsqlite;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
 
 import com.example.applicationwithsqlite.adapter.TemanAdapter;
 import com.example.applicationwithsqlite.database.DBController;
@@ -20,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TemanAdapter adapter;
     private ArrayList<Teman> temanArrayList;
+    private FloatingActionButton fab;
     DBController controller = new DBController(this);
     String id,nm,tlp;
-    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,16 +46,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
     }
 
     public void BacaData(){
+        //ambil semua data teman dari DBController.getAllTeman
         ArrayList<HashMap<String,String>> daftarTeman = controller.getAllTeman();
         temanArrayList = new ArrayList<>();
 
         //memindah hasil query kedalam teman
-        for (int i=0;i<daftarTeman.size();i++){
+        for (int i = 0 ; i < daftarTeman.size(); i++){
             Teman teman = new Teman();
-
             teman.setId(daftarTeman.get(i).get("id"));
             teman.setNama(daftarTeman.get(i).get("nama"));
             teman.setTelepon(daftarTeman.get(i).get("telepon"));

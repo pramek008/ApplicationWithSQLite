@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.applicationwithsqlite.database.DBController;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
@@ -32,8 +33,7 @@ public class TemanBaru extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if((tNama.getText().toString()).equals("") || (tTelepon.getText().toString()).equals("")){
-                    Toast t = Toast.makeText(getApplicationContext(),
-                            "Isi semua Kolom !!!",Toast.LENGTH_SHORT);
+                    Snackbar t = Snackbar.make(v, "Isi semua Kolom !!!",Snackbar.LENGTH_SHORT);
                     t.show();
                 }else {
                     nm = tNama.getText().toString();

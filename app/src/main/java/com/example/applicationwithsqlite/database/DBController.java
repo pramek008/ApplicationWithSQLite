@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class DBController extends SQLiteOpenHelper {
     public DBController(Context context) {
@@ -31,15 +32,33 @@ public class DBController extends SQLiteOpenHelper {
         SQLiteDatabase basisData = this.getWritableDatabase();
         ContentValues nilai = new ContentValues();
         nilai.put("nama",queryValues.get("nama"));
-        nilai.put("telepon", queryValues.get("telepon"));
+        nilai.put("telepon",queryValues.get("telepon"));
         basisData.insert("teman", null, nilai);
+        basisData.close();
+    }
+
+    public void updateTeman(HashMap<String,String> qValues){
+        SQLiteDatabase basisData = this.getWritableDatabase();
+        ContentValues nilai = new ContentValues();
+        nilai.put("id",qValues.get("id"));
+        nilai.put("nama", qValues.get("nama"));
+        nilai.put("telepon",qValues.get("telepon"));
+//        basisData.update("teman",nilai,"id=?",new String[]{qValues.get("id")});
+        basisData.update("teman",nilai,"nama"+"=?", new String[]{qValues.get("nama")});
+//        basisData.update("teman",nilai,"telepon"+"=?", new String[]{qValues.get("telepon")});
+        basisData.close();
+    }
+
+    public void deleteTeman(HashMap<String,String> qValues){
+        SQLiteDatabase basisData = this.getWritableDatabase();
+        basisData.delete("teman", "nama=?", new String[]{qValues.get("nama")});
         basisData.close();
     }
 
     public ArrayList<HashMap<String,String>> getAllTeman(){
         ArrayList<HashMap<String,String>> daftarTeman;
         daftarTeman = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "Select * from teman";
+        String selectQuery = "SELECT * FROM teman";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -55,4 +74,19 @@ public class DBController extends SQLiteOpenHelper {
         db.close();
         return daftarTeman;
     }
+
+//    public HashMap<String,String> getTemanInfo(String idTeman){
+//        HashMap<String,String> temanList = new HashMap<String, String>();
+//        SQLiteDatabase basisData = this.getReadableDatabase();
+//        String selectQuery = "SELECT * FROM teman where id='"+idTeman+"'";
+//        Cursor cursor = basisData.rawQuery(selectQuery, null);
+//        if (cursor.moveToFirst()){
+//            do{
+//                temanList.put("id", cursor.getString(0));
+//                temanList.put("nama", cursor.getString(1));
+//                temanList.put("telepon", cursor.getString(2));
+//            }while (cursor.moveToNext());
+//        }
+//        return temanList;
+//    }
 }
